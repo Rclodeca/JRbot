@@ -54,9 +54,13 @@ client.on("message", async message => {
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const command = args.shift().toLowerCase();
 	try {
+
+
 		if (command === "server") {
     		message.channel.send(`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
 		}
+
+
 		else if (command === "insult") {
 			const taggedUser = message.mentions.users.first();
 			var rand = insultsArray[Math.floor(Math.random() * insultsArray.length)];
@@ -68,17 +72,22 @@ client.on("message", async message => {
 				message.channel.send(`${taggedUser.username} ${rand}`);
 			}
 		}
+
+
 		else if(command === "say") {
 			const sayMessage = args.join(" ");
 
 			message.delete().catch(error=>{}); 
 			message.channel.send(sayMessage);
 		}
+
+
 		else if(command === "help") {
 			message.channel.send("type /server for server info.\ntype /insult {user} to roast them.\ntype /say {message} to make me say something.\ntype /help for command list.\ntype /purge {number} to delete a certain amount of messages." +
-				"\ntype /mute to mute someone.\ntype /unmute to unmute someone."
+				"\ntype /mute {user} to mute someone.\ntype /unmute {user} to unmute someone."
 				);
 		}
+
 
 		else if(command === "purge") {
 			const deleteCount = parseInt(args[0], 10);
@@ -90,6 +99,7 @@ client.on("message", async message => {
 			message.channel.bulkDelete(fetched)
 			.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 		}
+
 
 		else if(command === "vote") {
 			const voteMessage = args.join(" ");
@@ -103,6 +113,7 @@ client.on("message", async message => {
 			.then(collected => console.log(`Collected ${collected.size} reactions`))
 			.catch(console.error);
 		}
+  
 
 		else if (command === "mute") {
 			if (!message.member.hasPermission("MANAGE_MESSAGES"))
@@ -165,7 +176,7 @@ client.on("message", async message => {
 			return;
 		}
 
-	
+
 
 	}
 	catch(error) {
