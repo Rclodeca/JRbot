@@ -75,7 +75,9 @@ client.on("message", async message => {
 			message.channel.send(sayMessage);
 		}
 		else if(command === "help") {
-			message.channel.send("type /server for server info.\ntype /insult {user} to roast them.\ntype /say {message} to make me say something.\ntype /help for command list.\ntype /purge {number} to delete a certain amount of messages.");
+			message.channel.send("type /server for server info.\ntype /insult {user} to roast them.\ntype /say {message} to make me say something.\ntype /help for command list.\ntype /purge {number} to delete a certain amount of messages." +
+				"\ntype /mute to mute someone.\ntype /unmute to unmute someone."
+				);
 		}
 
 		else if(command === "purge") {
@@ -162,6 +164,8 @@ client.on("message", async message => {
 
 			return;
 		}
+
+	
 
 	}
 	catch(error) {
