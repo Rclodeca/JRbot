@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { prefix, token, insultsArray } = require('./config.json');
+const { prefix, token, insultsArray, kaije, cameron } = require('./config.json');
 var counter = 0;
 
 const client = new Discord.Client();
@@ -24,21 +24,12 @@ client.on("message", (message) => {
 		case "💩":
 			send = "really?";
 			break;
-		case "<:chinkje:441425605293113375>":
-			send = "<:chinkje:441425605293113375>";
+		case kaije:
+			send = kaije;
 			break;	
-		case "<:hagfag:441419453184344065>":
-			send = "<:hagfag:441419453184344065>";
+		case cameron:
+			send = cameron;
 			break;
-		case "<@!202954427315781634>":
-			send = "<:hagfag:441419453184344065>";
-			break;
-		case "<@333426438965559317>":
-			send = "<:smallchode:441433602907963404>";
-			break;
-		case "<@141402947266281473>":
-			send = "<:Weeaboo:441418967488397322>";
-			break;	
 		default:
 			counter++;
 			if (counter === 100) {
@@ -86,6 +77,7 @@ client.on("message", async message => {
 		else if(command === "help") {
 			message.channel.send("type /server for server info.\ntype /insult {user} to roast them.\ntype /say {message} to make me say something.\ntype /help for command list.\ntype /purge {number} to delete a certain amount of messages.");
 		}
+
 		else if(command === "purge") {
 			const deleteCount = parseInt(args[0], 10);
 
@@ -96,6 +88,7 @@ client.on("message", async message => {
 			message.channel.bulkDelete(fetched)
 			.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 		}
+
 		else if(command === "vote") {
 			const voteMessage = args.join(" ");
 
@@ -109,9 +102,65 @@ client.on("message", async message => {
 			.catch(console.error);
 		}
 
+		else if (command === "mute") {
+			if (!message.member.hasPermission("MANAGE_MESSAGES"))
+				return message.channel.send("You don't have permission for that.");
+
+			let toMute = message.guild.member(message.mentions.users.first());
+			if (!toMute) return message.channel.send("No specified user.");
+
+			let role = message.guild.roles.find(r => r.name === "Muted");
+			if(!role) {
+				try {
+					role = await message.guild.createRole({
+						name: "Muted",
+						permissions: []
+					});
+
+					message.guild.channels.forEach(async (channel, id) => {
+						await channel.overwritePermissions(role, {
+							SEND_MESSAGES: false,
+							ADD_REACTIONS: false
+						});
+					});
+
+				} catch(err) {
+					console.log(err.stack);
+				}
+			}
+
+			if(toMute.roles.has(role.id)) 
+				return message.channel.send("That user is already muted");
+
+			await toMute.addRole(role);
+			message.channel.send("Muted");
+
+			return;
+		}
+
+
+		else if (command === "unmute") {
+			if (!message.member.hasPermission("MANAGE_MESSAGES"))
+				return message.channel.send("You don't have permission for that.");
+
+			let toMute = message.guild.member(message.mentions.users.first());
+			if (!toMute) return message.channel.send("No specified user.");
+
+			let role = message.guild.roles.find(r => r.name === "Muted");
+		
+			if(!role || !toMute.roles.has(role.id)) 
+				return message.channel.send("That user is not muted");
+
+			await toMute.removeRole(role);
+			message.channel.send("Unmuted");
+
+			return;
+		}
+
 	}
 	catch(error) {
 		message.channel.send("You can't do that dummy");
+		console.log(error.stack);
 	}
 });
 
