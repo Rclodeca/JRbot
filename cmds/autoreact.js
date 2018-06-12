@@ -1,6 +1,5 @@
+const { prefix, token, insultsArray, kaije } = require('./../config.json');
 module.exports.run = async (client, message, args) => {
-	console.log("autoReact is working");
-	const { prefix, token, insultsArray, kaije } = require('./../config.json');
 
 	if(message.author.bot) return;
 
