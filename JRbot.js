@@ -78,7 +78,7 @@ client.on("message", async message => {
 		command.run(client, message, args);
 	}
 
-	try {
+	/*try {
 
 
 		if (command === "server") {
@@ -207,7 +207,7 @@ client.on("message", async message => {
 	catch(error) {
 		message.channel.send("You can't do that dummy");
 		console.log(error.stack);
-	}
+	}*/
 });
 
 
